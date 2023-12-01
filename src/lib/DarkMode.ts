@@ -29,10 +29,7 @@ export const toggleTheme = () => {
 
 export const applyTheme = () => {
   const preferredTheme = prefersDarkThemes() ? THEMES.DARK : THEMES.LIGHT;
-  // currentTheme.set() = localStorage.getItem(STORAGE_KEY) ?? preferredTheme;
   currentTheme.set(localStorage.getItem(STORAGE_KEY) ?? preferredTheme);
-
-  // currentTheme = localStorage.getItem(STORAGE_KEY) ?? preferredTheme;
 
   if (get(currentTheme) === THEMES.DARK) {
     document.body.classList.remove(THEMES.LIGHT);
