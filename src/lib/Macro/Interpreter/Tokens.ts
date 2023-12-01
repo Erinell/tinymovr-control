@@ -54,39 +54,31 @@ export function readString(reader: CharacterReader) {
     }
 
     if (value.length == 0) {
-        return null; // if no string token was found
+        return null;
     }
 
-    // return token of type string
     return { type: 'string', value };
 }
 
 export function readOperator(reader: CharacterReader) {
-    // Regex for operator characters we want to detect.
     const operatorMatch = /^(!|\+|-|\*|\/|==|!=|&&|\|\||<|>|<=|>=|=|!=)$/;
-
-    // Peek one character to detect one character operator
     const oneCharacterOperator = reader.peek();
-
-    // Peek one character to detect two characters operator
     const twoCharacterOperator = reader.peek(2);
 
     let value = null;
 
     if (twoCharacterOperator.match(operatorMatch)) {
         reader.next(2);
-        value = twoCharacterOperator; // two character operator was found
+        value = twoCharacterOperator;
     } else if (oneCharacterOperator.match(operatorMatch)) {
         reader.next();
-        value = oneCharacterOperator; // one character operator was found
+        value = oneCharacterOperator;
     }
 
     if (value) {
-        // Operator is found, we return the token.
         return { type: 'operator', value };
     }
 
-    // Nothing was found so we return null that the token was not found.
     return null;
 }
 
@@ -95,7 +87,6 @@ export function readName(reader: CharacterReader) {
     const startOfVariableMatch = /[a-z]/;
     const restOfVariableMatch = /[a-zA-Z0-9]/;
 
-    // If we did not match variable, do not return a token.
     if (!reader.peek().match(startOfVariableMatch)) {
         return null;
     }
@@ -104,12 +95,10 @@ export function readName(reader: CharacterReader) {
     reader.next();
 
     while (reader.hasNext() && reader.peek().match(restOfVariableMatch)) {
-        // add a character to value as long as we match the variable name.
         value += reader.peek();
         reader.next();
     }
 
-    // we return a variable token
     return { type: 'name', value };
 }
 
@@ -133,81 +122,65 @@ export function readKeyword(reader: CharacterReader) {
         return { type: 'keyword', value: '#' };
     }
 
-    // No keyword detected
     return null;
 }
 
 export function readParentheses(reader: CharacterReader) {
     if (reader.peek() == '(') {
-        // We detected '(', start of parentheses
         reader.next();
         return { type: 'parenStart', value: '(' };
     }
 
     if (reader.peek() == ')') {
-        // We detected ')', end of parentheses
         reader.next();
         return { type: 'parenEnd', value: ')' };
     }
 
-    // No token was detected.
     return null;
 }
 
 export function readCodeBlocks(reader: CharacterReader) {
     if (reader.peek() == '{') {
-        // We detected '{', start of code block
         reader.next();
         return { type: 'codeBlockStart', value: '{' };
     }
 
     if (reader.peek() == '}') {
-        // We detected '}', end of code block
         reader.next();
         return { type: 'codeBlockEnd', value: '}' };
     }
 
-    // No token was detected.
     return null;
 }
 
 export function readEndOfLine(reader: CharacterReader) {
     if (reader.peek() == ';') {
-        // Semicolon is detected
         reader.next();
         return { type: 'endOfLine', value: ';' };
     }
 
-    // Semicolon is not detected
     return null;
 }
 
 export function readComma(reader: CharacterReader) {
     if (reader.peek() == ',') {
-        // Comma was detected
         reader.next();
         return { type: 'comma', value: ',' };
     }
-
-    // Token was not detected.
     return null;
 }
 
 export function readWhitespace(reader: CharacterReader){
-    const whitespaceRegex = /[\t\r\n ]/; // Regex for detecting whitespace.
+    const whitespaceRegex = /[\t\r\n ]/;
     let value = '';
     while (reader.hasNext() && reader.peek().match(whitespaceRegex)) {
-        // add detected whitespace to the value
         value += reader.peek();
         reader.next();
     }
 
     if (value.length > 0) {
-        // Return detected whitespace.
         return { type: 'whitespace', value };
     }
-
-    // No whitespace token was detected.
     return null;
 }
 

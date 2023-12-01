@@ -6,9 +6,9 @@ export default class TokenReader {
     stateStack: Array<number>
 
     constructor(tokens: Array<Token>) {
-        this.tokens = tokens; // store tokens for further use
-        this.position = 0; // current position in token list
-        this.stateStack = []; // state stack so that we can rollback if we do not match something.
+        this.tokens = tokens;
+        this.position = 0;
+        this.stateStack = [];
     }
 
     /**

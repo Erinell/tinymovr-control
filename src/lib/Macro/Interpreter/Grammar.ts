@@ -13,7 +13,7 @@ export const LineStatement = rule(
     (expression: GExpression) => expression
 );
 
-// // ElseExpressionStatement -> IfKeyword PStart Expression PEnd CodeBlock
+// // IfElseExpressionStatement -> IfKeyword PStart Expression PEnd CodeBlock ElseKeyword CodeBlock
 const IfElseExpressionStatement = rule(
     () => exactly(IfKeyword, PStart, Expression, PEnd, CodeBlock, ElseKeyword, CodeBlock),
     ([, , check, , ifStatements, , elseStatements]: [null, null, GCheck, null, Array<Statement>, null, Array<Statement>]) => ({ type: 'ifelse', check, ifStatements, elseStatements })
@@ -25,7 +25,7 @@ const WhileExpressionStatement = rule(
     ([, , check, , statements]: [null, null, GCheck, null, Array<Statement>]) => ({ type: 'while', check, statements })
 )
 
-// IfExpressionStatement -> IfKeyword PStart Expression PEnd CodeBlock
+// IfExpressionStatement -> IfKeyword PStart Expression PEnd CodeBlock !ElseKeyword
 const IfExpressionStatement = rule(
     () => exactly(IfKeyword, PStart, Expression, PEnd, CodeBlock, not(ElseKeyword)),
     ([, , check, , statements]: [null, null, GCheck, null, Array<Statement>]) => ({ type: 'if', check, statements})

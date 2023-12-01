@@ -42,9 +42,3 @@ export async function run(code: string) {
         }
     }
 }
-
-// console.log('Code we ran:');
-// console.log(code);
-// console.log('Result:')
-// console.dir(result, {depth: null});
-// console.log('Final VM State:', vm);

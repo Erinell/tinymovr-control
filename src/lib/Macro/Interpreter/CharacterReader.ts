@@ -26,16 +26,14 @@ export default class CharacterReader {
     */
     next(amount = 1) {
         for (let i = this.position; i < this.position + amount; i++) {
-            // if(this.peek() === '#') console.log(this.peek());
-            if (this.code[i] == '\n') { // If a new line character is detected
-                this.linePosition++; // Increase line position
-                this.characterPosition = 0; // Reset character position as it is a new line.
+            if (this.code[i] == '\n') {
+                this.linePosition++; 
+                this.characterPosition = 0;
                 continue;
             }
-            this.characterPosition++; // Increase character position for the line.
+            this.characterPosition++;
         }
-
-        this.position += amount; // Change current reader position in code string.
+        this.position += amount;
     }
 
     /**
