@@ -43,5 +43,7 @@
   "trajectory-planner": "Trajectory Planner",
   "value": "Value",
   "velocity": "Velocity",
-  "view": "View"
+  "view": "View",
+  "macro-name-required": "Name required!",
+  "macro-already-exist": "A macro already exist with this name!"
 }

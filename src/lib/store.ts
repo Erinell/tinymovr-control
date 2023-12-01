@@ -3,6 +3,7 @@ import type { WebSocketManager } from "$lib/WebSocket";
 import { browser } from '$app/environment';
 import type { Chart, Config, IApi, IApiChild, Macro, TrajPlanner } from '$lib/interfaces';
 import { toastsStore } from './Components/ui/toast';
+import { _ } from "svelte-i18n";
 
 export const defaultConfig = readable<Config>({
   size: {
@@ -277,8 +278,8 @@ function create_macros() {
   const { subscribe, set } = writable<Macro[]>(loadMacros() ?? [{ name: "Example", code: "a = 0;\nwhile (a < 5) {\n  print(a);\n  sleep(1000);\n  a = a+1;\n}" }]);
 
   const add = (name: string, code: string) => {
-    if (name.length === 0) { toastsStore.danger(`Le nom ne doit pas être vide !`); return true; }
-    if (get(macros).find(m => m.name === name)) { toastsStore.danger(`La macro ${name} existe déjà !`); return true; };
+    if (name.length === 0) { toastsStore.danger(get(_)("macro-name-required")); return true; }
+    if (get(macros).find(m => m.name === name)) { toastsStore.danger(get(_)("macro-already-exist")); return true; };
     let new_macro = {
       name,
       code

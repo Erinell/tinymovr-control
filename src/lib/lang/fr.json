@@ -43,5 +43,7 @@
   "confirm-delete-macro": "Cette action va supprimer la macro",
   "macros": "Macros",
   "connection-unable": "Impossible de se connecter",
-  "no-devices-found": "Aucun appareil trouvé"
+  "no-devices-found": "Aucun appareil trouvé",
+  "macro-name-required": "Le nom est requis !",
+  "macro-already-exist": "La macro existe déjà avec ce nom !"
 }
