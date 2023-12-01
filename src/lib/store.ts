@@ -107,13 +107,13 @@ export class Device {
     let filter_type = ["bool", "float", "uint32", "int8", "uint8"]
 
     api.forEach((section: any) => {
-      if (section.childs.length == 0 && filter_type.includes(section.type)) { // && filter.some(n => n.includes(section.name))
+      if (section.childs.length == 0 && filter_type.includes(section.type)) {
         this.websocket.send(`${this.id}.${section.name}`, null, (res: any) => {
           this.data[section.name] = this.parseFormat(res, section.type, section.flags ?? null);
         });
       }
       section.childs.forEach((endpoint: any) => {
-        if (filter_type.includes(endpoint.type)) { // filter.some(n => `${section.name}.${endpoint.name}`.includes(n))
+        if (filter_type.includes(endpoint.type)) {
           this.websocket.send(`${this.id}.${section.name}.${endpoint.name}`, null, (res: any) => {
             this.data[`${section.name}.${endpoint.name}`] = this.parseFormat(res, endpoint.type, endpoint.flags ?? null);
           });
@@ -126,7 +126,7 @@ export class Device {
 
   fetchData(api: any, endpoints: Array<string>) {
     this.now = new Date();
-    let filter = endpoints;//["Vbus", "Ibus", "power", "temp", "errors", "calibrated", "encoder.position_estimate", "controller.current.Iq_estimate", "controller.position.setpoint"];
+    let filter = endpoints;
 
     api.forEach((section: any) => {
       if (section.childs.length == 0 && filter.some(n => n.includes(section.name))) {
@@ -308,10 +308,7 @@ function create_macros() {
 }
 
 
-
-
-
-const defaultClocks = writable([
+const defaultLoops = writable([
   {
     id: 0,
     interval: 1000,
@@ -332,16 +329,6 @@ const defaultClocks = writable([
     id: 1,
     interval: 100,
     endpoints: [
-      // "Vbus",
-      // "Ibus",
-      // "power",
-      // "temp",
-      // "errors",
-      // "calibrated",
-      // "encoder.",
-      // "controller.position.",
-      // "controller.velocity.",
-      // "controller.current.",
       "encoder.position_estimate",
       "controller.current.Iq_estimate",
     ],
@@ -350,32 +337,29 @@ const defaultClocks = writable([
   },
 ])
 
-export const loop = create_clock();
-function create_clock() {
+export const loop = create_loop();
+function create_loop() {
   const { set } = writable();
 
   const run = async (id: number, interval: number) => {
-    if (get(defaultClocks)[id].active === false) return;
+    if (get(defaultLoops)[id].active === false) return;
     if (get(device)) {
-      get(device)?.fetchData(get(API), get(defaultClocks)[id].endpoints);
+      get(device)?.fetchData(get(API), get(defaultLoops)[id].endpoints);
     }
 
     setTimeout(run, interval, id, interval);
-    // return new Promise((resolve, reject) => {
-    //   resolve(id);
-    // })
   }
 
   const stop = (id: number) => {
-    get(defaultClocks)[id].active = false;
+    get(defaultLoops)[id].active = false;
   }
 
   const stopAll = () => {
-    get(defaultClocks).map(c => c.active = false);
+    get(defaultLoops).map(c => c.active = false);
   }
 
   const activeAll = () => {
-    get(defaultClocks).map(c => c.active = true);
+    get(defaultLoops).map(c => c.active = true);
   }
 
   return {
@@ -389,9 +373,3 @@ function create_clock() {
 
 export const editable_sections = writable<boolean>(false);
 export const remove_sections = writable<boolean>(false);
-
-// let clock = create_clock(1);
-// clock.subscribe(v => {
-//   console.log(v);
-
-// })

@@ -101,9 +101,6 @@
     loop.activeAll();
     loop.run(0, 1000);
     loop.run(1, 50);
-    //       $device
-    //         ? ($device.data = $device.fetchData($API, clock.endpoints))
-    //         : null;
   }
 
   onDestroy(() => {
@@ -118,7 +115,6 @@
     $editable_sections = false;
 
     devices_store.reset();
-    // currentDevice = undefined;
     device.set(null);
     websocket.close(1000);
   }
