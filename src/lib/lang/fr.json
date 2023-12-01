@@ -11,6 +11,7 @@
   "disconnect": "Déconnexion",
   "edit": "Editer",
   "edit-charts": "Editer les graphiques",
+  "error-connected-data": "Vous devez être connecter à un appareil pour collecter ses données.",
   "export-json-data": "Exporter données JSON",
   "file": "Fichier",
   "homing": "Homing",
@@ -24,6 +25,7 @@
   "position": "Position",
   "remove": "Retirer",
   "remove-all": "Tout retirer",
+  "remove-charts-confirm": "Cette action va enlever les graphiques et enregistrer la configuration.",
   "request-placeholder": "Requête...",
   "reset-all": "Reinitialiser",
   "save": "Sauvegarder",
@@ -32,11 +34,14 @@
   "send": "Envoyer",
   "share": "Partager",
   "show_titles": "Voir les titres",
+  "size": "Taille",
   "title": "Titre",
   "trajectory-planner": "Trajectory Planner",
   "value": "Valeur",
   "velocity": "Vitesse",
   "view": "Affichage",
-  "remove-charts-confirm": "Cette action va enlever les graphiques et enregistrer la configuration.",
-  "error-connected-data": "Vous devez être connecter à un appareil pour collecter ses données."
+  "confirm-delete-macro": "Cette action va supprimer la macro",
+  "macros": "Macros",
+  "connection-unable": "Impossible de se connecter",
+  "no-devices-found": "Aucun appareil trouvé"
 }

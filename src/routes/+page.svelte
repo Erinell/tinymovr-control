@@ -73,7 +73,7 @@
 
     websocket.onErrorHandler = () => {
       if (connecting) {
-        toastsStore.error("Impossible de se connecter au serveur", 5000);
+        toastsStore.error($_("connection-unable"), 5000);
       }
       connecting = false;
     };
@@ -84,7 +84,7 @@
           devices_store.remove($device.id);
           selectDevice();
         } else {
-          toastsStore.danger("Aucun appareil trouvé !");
+          toastsStore.danger($_("no-devices-found"));
           close();
         }
       } else {
