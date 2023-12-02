@@ -34,7 +34,7 @@ params["bitrate"] = 1000000
 init_tee(can.Bus(**params))
 
 dsc = Discovery(node_appeared, node_disappeared, logger)
-print("Recherche...")
+print("Searching device(s)...")
 
 start_time = time.time()
 while len(user_ns) == 0:
@@ -89,7 +89,7 @@ def process_api(path, value):
             if len(nested_api.get("arguments")) == len(args_value):
                 nested_tm(*args_value)
             else:
-                raise Exception("Le nombre d'argument(s) ne correspond pas.")
+                raise Exception("The number of args does not match")
 
     if nested_api.get("dtype") in ['uint8']:
         try:
