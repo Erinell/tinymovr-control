@@ -113,7 +113,7 @@
 
 <AddSection open={add_section} onClose={() => (add_section = false)}
 ></AddSection>
-<AddChart open={add_chart} onClose={() => (add_chart = false, console.log("test"))} />
+<AddChart open={add_chart} onClose={() => (add_chart = false)} />
 <EditCharts open={edit_charts} onClose={() => (edit_charts = false)} />
 <SharePlainText
   open={share_plain_text}
@@ -144,7 +144,7 @@
       <Menubar.Item on:click={exportJSON}
         ><FileJson2 class="w-5 mr-2" />{$_("export-json-data")}</Menubar.Item
       >
-      <!-- <Input type="file" class="file_button" />
+      <!-- <Input type="file" class="file_button"/>
       <Menubar.Item on:click={importConfig}>
         <Upload class="w-5 mr-2" />
         <Input type="file" class="file_button" />
@@ -154,7 +154,6 @@
       <Menubar.Sub>
         <Menubar.SubTrigger>{$_("share")}</Menubar.SubTrigger>
         <Menubar.SubContent>
-          <!-- TODO: exporter pour discord -->
           <Menubar.Item
             on:click={() => {
               share_plain_text = true;
@@ -248,7 +247,7 @@
           <Menubar.Item
             class="text-destructive"
             on:click={() => {
-              // TODO: reset pas tout le temps, besoin F5...
+              // TODO: not reset every time, need refresh page...
               $config.sections = $defaultConfig.sections;
             }}
           >
