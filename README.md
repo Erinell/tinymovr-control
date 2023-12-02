@@ -27,11 +27,14 @@ Before using this app, I highly recommend having already used your board through
 - npm 10 or newer
 
 ### Installation
-#### From release
+#### Server
+Just download `server-x.x.x.zip` form [release](https://github.com/Erinell/tinymovr-control/releases)
+
+#### Client from release
 1. Download the latest build from [release](https://github.com/Erinell/tinymovr-control/releases)
 2. Install the program
 
-#### From source
+#### Client from source
 1. Clone the repository
 ```bash
 git clone https://github.com/Erinell/tinymovr-control.git
