@@ -38,10 +38,18 @@ function createMainWindow() {
     });
 
     mainwindow.setMenuBarVisibility(false);
-    
+
     mainwindow.maximize();
 
     mainwindow.once("close", () => { mainwindow = null; });
+
+    mainwindow.webContents.setWindowOpenHandler(({ url }) => {
+        if (url.startsWith("http")) {
+            require("electron").shell.openExternal(url);
+            return { action: 'deny' };
+        }
+        return { action: 'allow' };
+    });
 
     if (!isdev) mainwindow.removeMenu();
     else mainwindow.webContents.openDevTools();
