@@ -66,7 +66,7 @@ npm run package:<win|linux>
 4. Click on Connect !
 
 ## Contributing
-Feel free to contribute or report issues to make this project even better!
+Feel free to contribute or report issues to make this project better!
 
 ## TODO
 - Ensure support for multiple boards
