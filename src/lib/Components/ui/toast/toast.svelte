@@ -20,7 +20,7 @@
         toasts = state;
     });
 
-    const titles = ["Information", "Succès", "Attention", "Erreur"];
+    const titles = ["Info", "Success", "Warning", "Error"];
 
     let color = [
         "border-primary text-primary",

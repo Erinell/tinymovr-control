@@ -41,7 +41,7 @@
     if (title.length === 0) title = endpoint;
     if (endpoint.length === 0)
       return (
-        (endpoint_error = true), toastsStore.danger("API endpoint obligatoire")
+        (endpoint_error = true), toastsStore.danger($_("api-required"))
       );
     endpoint_error = false;
 

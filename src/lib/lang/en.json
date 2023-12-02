@@ -45,5 +45,6 @@
   "trajectory-planner": "Trajectory Planner",
   "value": "Value",
   "velocity": "Velocity",
-  "view": "View"
+  "view": "View",
+  "api-required": "API endpoint required"
 }
