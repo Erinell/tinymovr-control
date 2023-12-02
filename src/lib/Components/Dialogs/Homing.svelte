@@ -26,10 +26,11 @@
                 >
             </Dialog.Header>
             <div>
-                max_homing_t, velocity, retract_dist, warnings,
+                Work in progress...
+                <!-- max_homing_t, velocity, retract_dist, warnings,
                 stall_detect.velocity, stall_detect.delta_pos, stall_detect.t,
                 home()
-                <Button>HOME</Button>
+                <Button>HOME</Button> -->
             </div>
             <Dialog.Footer>
                 <Button variant="outline" type="submit" on:click={onCancel}
