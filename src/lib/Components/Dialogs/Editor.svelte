@@ -3,7 +3,6 @@
     import { Dialog, Button } from "$lib";
     export let open = false;
     import { _ } from "svelte-i18n";
-    import loader from "@monaco-editor/loader";
     import { onDestroy, onMount } from "svelte";
     import type * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
     import { currentTheme } from "$lib/DarkMode";
@@ -51,9 +50,6 @@
         };
 
         const Monaco = await import("monaco-editor");
-        // loader.config({ monaco: monacoEditor.default });
-
-        // monaco = await loader.init();
         
         Monaco.editor.defineTheme("dark", {
             base: "vs-dark",
