@@ -11,9 +11,8 @@
   "scripts": {
     "dev": "vite dev",
     "package": "npm run build && electron-builder -w",
-    "electron:package:mac": "yarn build && electron-builder -m",
-    "electron:package:win": "yarn build && electron-builder -w",
-    "electron:package:linux": "yarn build && electron-builder -l",
+    "package:win": "npm run build && electron-builder -w",
+    "package:linux": "npm run build && electron-builder -l",
     "electron": "concurrently --kill-others \"vite dev\" \"electron src/electron.cjs\"",
     "preview": "vite preview",
     "build": "vite build"
@@ -35,7 +34,7 @@
     "typescript": "^5.3.2",
     "vite": "^4.4.2"
   },
-  "license": "",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "bits-ui": "^0.9.8",
@@ -71,9 +70,6 @@
     "directories": {
       "buildResources": "public",
       "output": "dist"
-    },
-    "mac": {
-      "target": "dmg"
     },
     "win": {
       "target": "nsis",
