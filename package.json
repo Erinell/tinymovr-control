@@ -7,15 +7,20 @@
     "name": "Cédric D.",
     "email": "ceddebois@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Erinell/tinymovr-control.git"
+  },
   "main": "src/electron.cjs",
   "scripts": {
     "dev": "vite dev",
-    "package": "npm run build && electron-builder -w",
+    "package": "npm run build && electron-builder -w -l --publish never",
     "package:win": "npm run build && electron-builder -w",
     "package:linux": "npm run build && electron-builder -l",
     "electron": "concurrently --kill-others \"vite dev\" \"electron src/electron.cjs\"",
     "preview": "vite preview",
-    "build": "vite build"
+    "build": "vite build",
+    "publish": "electron-builder build -w -l --publish always"
   },
   "devDependencies": {
     "@monaco-editor/loader": "^1.4.0",
