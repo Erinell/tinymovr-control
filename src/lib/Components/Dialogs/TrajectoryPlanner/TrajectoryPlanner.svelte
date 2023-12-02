@@ -36,7 +36,6 @@
   let move_to: number;
   let delay: number = 5000;
 
-
   $: {
     if (open && !opened) {
       opened = true;
@@ -49,17 +48,19 @@
     }
   }
   $: trajectories = $actions;
+
+  function onCancel() {
+    actions.set($config.traj_planner);
+    onClose();
+  }
+
+  function onSave() {
+    $config.traj_planner = trajectories;
+    onClose();
+  }
 </script>
 
-<Dialog.Root
-  {open}
-  onOpenChange={(e) => {
-    onClose();
-    open = false;
-  }}
-  closeOnEscape={false}
-  closeOnOutsideClick={false}
->
+<Dialog.Root {open} closeOnEscape={false} closeOnOutsideClick={false}>
   <Dialog.Portal>
     <Dialog.Content class="sm:max-w-[850px]">
       <Dialog.Header>
@@ -233,8 +234,6 @@
                 delay,
               })}>Add</Button
           >
-
-
         </div>
         <Table.Root class="mt-2">
           <!-- <Table.Caption>Liste des graphiques.</Table.Caption> -->
@@ -250,109 +249,98 @@
             </Table.Row>
           </Table.Header>
           <Table.Body>
-              {#each trajectories as action, id}
-                <Table.Row
-                  class={$current_index === id ? "dark:bg-green-900" : null}
+            {#each trajectories as action, id}
+              <Table.Row
+                class={$current_index === id ? "dark:bg-green-900" : null}
+              >
+                <Table.Cell class="p-2">#{id + 1}</Table.Cell>
+                <Table.Cell class="p-2"
+                  ><Card.Root class="px-2 py-1 font-medium"
+                    >{action.move_to}</Card.Root
+                  ></Table.Cell
                 >
-                  <Table.Cell class="p-2">#{id + 1}</Table.Cell>
-                  <Table.Cell class="p-2"
-                    ><Card.Root class="px-2 py-1 font-medium"
-                      >{action.move_to}</Card.Root
-                    ></Table.Cell
-                  >
-                  <Table.Cell class="p-2"
-                    >{action.acc}
-                    {action.mode === "time_limited"
-                      ? "sec"
-                      : "tick/s²"}</Table.Cell
-                  >
-                  <Table.Cell class="p-2"
-                    >{action.vel}
-                    {action.mode === "time_limited"
-                      ? "sec"
-                      : "tick/s"}</Table.Cell
-                  >
-                  <Table.Cell class="p-2"
-                    >{action.acc}
-                    {action.mode === "time_limited"
-                      ? "sec"
-                      : "tick/s²"}</Table.Cell
-                  >
+                <Table.Cell class="p-2"
+                  >{action.acc}
+                  {action.mode === "time_limited"
+                    ? "sec"
+                    : "tick/s²"}</Table.Cell
+                >
+                <Table.Cell class="p-2"
+                  >{action.vel}
+                  {action.mode === "time_limited"
+                    ? "sec"
+                    : "tick/s"}</Table.Cell
+                >
+                <Table.Cell class="p-2"
+                  >{action.acc}
+                  {action.mode === "time_limited"
+                    ? "sec"
+                    : "tick/s²"}</Table.Cell
+                >
 
-                  <Table.Cell class="p-2">{action.delay} ms</Table.Cell>
+                <Table.Cell class="p-2">{action.delay} ms</Table.Cell>
 
-                  <Table.Cell
-                    class="text-right p-2 flex  items-center gap-2 justify-end"
-                  >
-                    <DropdownMenu.Root
-                      positioning={{ placement: "bottom-end" }}
-                    >
-                      <DropdownMenu.Trigger asChild let:builder>
-                        <Button
-                          builders={[builder]}
-                          variant="ghost"
-                          size="sm"
-                          aria-label="Open menu"
+                <Table.Cell
+                  class="text-right p-2 flex  items-center gap-2 justify-end"
+                >
+                  <DropdownMenu.Root positioning={{ placement: "bottom-end" }}>
+                    <DropdownMenu.Trigger asChild let:builder>
+                      <Button
+                        builders={[builder]}
+                        variant="ghost"
+                        size="sm"
+                        aria-label="Open menu"
+                      >
+                        <MoreHorizontal />
+                      </Button>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content class="w-[200px]">
+                      <DropdownMenu.Group>
+                        <DropdownMenu.Label class="flex"
+                          >Actions</DropdownMenu.Label
                         >
-                          <MoreHorizontal />
-                        </Button>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content class="w-[200px]">
-                        <DropdownMenu.Group>
-                          <DropdownMenu.Label class="flex"
-                            >Actions</DropdownMenu.Label
-                          >
-                          <DropdownMenu.Item
-                            on:click={() => actions.move(action, 1)}
-                          >
-                            <ChevronUp class="mr-2 h-4 w-4" />
-                            {$_("move-up")}
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Item
-                            on:click={() => actions.move(action, -1)}
-                          >
-                            <ChevronDown class="mr-2 h-4 w-4" />
-                            {$_("move-down")}
-                          </DropdownMenu.Item>
-                          <DropdownMenu.Separator />
+                        <DropdownMenu.Item
+                          on:click={() => actions.move(action, 1)}
+                        >
+                          <ChevronUp class="mr-2 h-4 w-4" />
+                          {$_("move-up")}
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item
+                          on:click={() => actions.move(action, -1)}
+                        >
+                          <ChevronDown class="mr-2 h-4 w-4" />
+                          {$_("move-down")}
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Separator />
 
-                          <DropdownMenu.Item
-                            class="text-red-600"
-                            on:click={() => actions.remove(action)}
-                          >
-                            <Trash class="mr-2 h-4 w-4" />
-                            {$_("remove")}
-                          </DropdownMenu.Item>
-                        </DropdownMenu.Group>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
-                  </Table.Cell>
-                </Table.Row>
-              {/each}
+                        <DropdownMenu.Item
+                          class="text-red-600"
+                          on:click={() => actions.remove(action)}
+                        >
+                          <Trash class="mr-2 h-4 w-4" />
+                          {$_("remove")}
+                        </DropdownMenu.Item>
+                      </DropdownMenu.Group>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Root>
+                </Table.Cell>
+              </Table.Row>
+            {/each}
           </Table.Body>
         </Table.Root>
-        
       </div>
       <Dialog.Footer>
-        <div class="flex items-center space-x-2 w-full ">
-          <Switch id="loop" onCheckedChange={(checked) => loop.set(checked) } />
+        <div class="flex items-center space-x-2 w-full">
+          <Switch id="loop" onCheckedChange={(checked) => loop.set(checked)} />
           <Label for="loop" class="text-md">Loop mode</Label>
         </div>
 
-        <Button
-          variant="outline"
-          on:click={() => (actions.set($config.traj_planner), (open = false))}
-          >{$_("cancel")}</Button
-        >
+        <Button variant="outline" on:click={onCancel}>{$_("cancel")}</Button>
         <!-- <Button on:click={() => (preview_traj = true)}>preview</Button> -->
         <Button type="submit" on:click={() => actions.execute()}
           >{$_("execute")}</Button
         >
-        <Button
-          type="submit"
-          on:click={() => (($config.traj_planner = trajectories), (open = false))}
-          >{$_("save")}</Button
-        >
+        <Button type="submit" on:click={onSave}>{$_("save")}</Button>
       </Dialog.Footer>
     </Dialog.Content>
   </Dialog.Portal>
