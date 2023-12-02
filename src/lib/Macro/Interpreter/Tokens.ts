@@ -1,7 +1,7 @@
 import type CharacterReader from "./CharacterReader";
 
 export function readComment(reader: CharacterReader) {
-    if(reader.peek(2) == "//" || reader.peek(1) == "#") {
+    if(reader.peek(2) == "//") {
         while(reader.peek() != '\n' && reader.hasNext()) {
             reader.next();
         }

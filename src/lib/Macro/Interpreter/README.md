@@ -1,5 +1,5 @@
-# Interpreteur
 
+An improved version of [ArekX](https://github.com/ArekX/javascript-interpreter-example) interpreter used to create macros.
 ### Variables
 ```typescript
 variable = value: string | number;
@@ -10,13 +10,11 @@ variable = variable + value;
 boolean not supported
 
 ### Operators
-Only theses operators are supported
 ```javascript
 && || == != < > <= >= + - * / !
 ```
 
 ### Conditions
-
 
 #### `if` & `if else`
 ```javascript
@@ -33,7 +31,7 @@ if (expression) {
 ```
 
 ### Loops
-##### /!\ les boucles sont limités à 1000 opérations par sécurité.
+**/!\ Loops are limited to 1000 operations for security reason.**
 #### `while`
 ```javascript
 while (expression) {
@@ -42,16 +40,10 @@ while (expression) {
 ```
 
 ### Other
-#### Comment
-There is two way to comment a line
+#### Comments
 ```javascript
 // commented
 ```
-or
-```python
-# commented
-```
-
 #### `print`
 Trigger a function that send to the console (can be set to an other output).
 ```typescript
