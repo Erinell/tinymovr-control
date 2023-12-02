@@ -88,6 +88,10 @@
         "provider": "github",
         "owner": "erinell"
       }
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "erinell"
     }
   }
 }
