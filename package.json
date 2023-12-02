@@ -20,7 +20,7 @@
     "electron": "concurrently --kill-others \"vite dev\" \"electron src/electron.cjs\"",
     "preview": "vite preview",
     "build": "vite build",
-    "publish": "electron-builder build -w -l --publish always"
+    "publish": "npm run build && electron-builder -w -l --publish always"
   },
   "devDependencies": {
     "@monaco-editor/loader": "^1.4.0",
