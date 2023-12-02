@@ -64,6 +64,9 @@ npm run package:<win|linux>
 3. Run the client
 4. Click on Connect !
 
+## Contributing
+Feel free to contribute or report issues to make this project even better!
+
 ## TODO
 - Ensure support for multiple boards
 - Add controls in Current mode
