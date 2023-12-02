@@ -6,18 +6,15 @@ Any references to company name, trademark, or logo are used for identification p
 
 ![Coms](docs/coms.png?raw=true)
 
-### Features
+## Features
 
-**Customizable Interface**
+### Customizable Interface
 User-friendly interface (almost) fully customizable designed to control and use boards efficiently.
-
-**WebSocket Communication**
+### WebSocket Communication
 Communicate with Tinymovr boards through WebSocket ensures real-time responsiveness, locally or remotely.
-
-**Programmable macro**
+### Programmable macro
 Program macros via the integrate editor with a simple language to send instructions or create logics. (see wiki)
-
-**Trajectory Planner**
+### Trajectory Planner
 Generate a trajectory easily by adding multiples accelerations, positions and decelerations.
 
 ## Getting Started
