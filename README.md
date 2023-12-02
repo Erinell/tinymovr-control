@@ -13,7 +13,7 @@ User-friendly interface (almost) fully customizable designed to control and use 
 ### WebSocket Communication
 Communicate with Tinymovr boards through WebSocket ensures real-time responsiveness, locally or remotely.
 ### Programmable macro
-Program macros via the integrate editor with a simple language to send instructions or create logics. (see wiki)
+Program macros via the integrate editor with a simple language to send instructions or create logics. [see wiki](https://github.com/Erinell/tinymovr-control/wiki/Macros-interpreter)
 ### Trajectory Planner
 Generate a trajectory easily by adding multiples accelerations, positions and decelerations.
 
