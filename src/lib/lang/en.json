@@ -2,6 +2,7 @@
   "add": "Add",
   "add-chart": "Add chart",
   "api-references": "API references...",
+  "api-required": "API endpoint required",
   "cancel": "Cancel",
   "chart": "Chart",
   "charts": "Charts",
@@ -45,6 +46,5 @@
   "trajectory-planner": "Trajectory Planner",
   "value": "Value",
   "velocity": "Velocity",
-  "view": "View",
-  "api-required": "API endpoint required"
+  "view": "View"
 }
