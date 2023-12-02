@@ -1,7 +1,7 @@
 # Tinymovr Control
 Tinymovr Control is a user-friendly interface that help control Tinymovr boards. This application communicate with Tinymovr boards via the Python server.
 
-*This project is not affiliated with or endorsed by the Tinymovr company. It's an independent initiative developed for me and made available to the community.
+>*This project is not affiliated with or endorsed by the Tinymovr company. It's an independent initiative developed for me and made available to the community.
 Any references to company name, trademark, or logo are used for identification purposes only and do not imply any endorsement or affiliation.*
 
 ![Coms](docs/coms.png?raw=true)
@@ -10,10 +10,13 @@ Any references to company name, trademark, or logo are used for identification p
 
 **Customizable Interface**
 User-friendly interface (almost) fully customizable designed to control and use boards efficiently.
+
 **WebSocket Communication**
 Communicate with Tinymovr boards through WebSocket ensures real-time responsiveness, locally or remotely.
+
 **Programmable macro**
 Program macros via the integrate editor with a simple language to send instructions or create logics. (see wiki)
+
 **Trajectory Planner**
 Generate a trajectory easily by adding multiples accelerations, positions and decelerations.
 
@@ -23,11 +26,11 @@ Generate a trajectory easily by adding multiples accelerations, positions and de
 Before using this app, I highly recommend having already used your board through Tinymovr Studio or a basic Python program to ensure you're off to a good start.
 
 ### Installation
-##### From release
-1. Download a build from [release](https://github.com/Erinell/tinymovr-control/releases)
+#### From release
+1. Download the latest build from [release](https://github.com/Erinell/tinymovr-control/releases)
 2. Install the program
 
-##### From source
+#### From source
 1. Clone the repository
 ```bash
 git clone https://github.com/Erinell/tinymovr-control.git
@@ -44,11 +47,12 @@ npm install
 ```
 
 4. Run the project
-    4.1 In browser
+
+    In browser
     ```bash
     npm run dev
     ```
-    4.2 In desktop app
+    In desktop app
     ```bash
     npm run electron
     ```
