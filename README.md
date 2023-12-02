@@ -22,9 +22,9 @@ Generate a trajectory easily by adding multiples accelerations, positions and de
 ### Requirements
 Before using this app, I highly recommend having already used your board through Tinymovr Studio or a basic Python program to ensure you're off to a good start.
 
-##### Development
-- Nodejs 18.x
-- npm 10.x
+**For development**
+- Nodejs 18 or newer
+- npm 10 or newer
 
 ### Installation
 #### From release
