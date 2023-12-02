@@ -21,6 +21,7 @@ def node_appeared(node, node_id):
     user_ns[display_name] = node
     ids.append(node_id)
 
+# not triggering this function when disconnecting...
 def node_disappeared(node_id):
     display_name = "{}{}".format(tms[node_id].name, node_id)
     print("Lost {}".format(display_name))
@@ -50,9 +51,8 @@ def process_api(path, value):
 
     attributes.pop(0)
     
-
-    if len(attributes) == 0: # retourner toutes les données
-        # TODO: envoyer les données en json
+    # all API data
+    if len(attributes) == 0:
         # for attr in dir(nested_tm):
         #     print(getattr(nested_tm, attr))
         return dumps(tm, default=str), nested_api
@@ -61,25 +61,26 @@ def process_api(path, value):
         nested_tm = getattr(nested_tm, attr)
         nested_api = list(filter(lambda x: x["name"]==attr, nested_api["remote_attributes"]))[0]
     
+    # set value
     if value != None and value != '':
         if "setter_name" in nested_api:
             _tm = tm
             for attr in attributes[:-1]:
                 _tm = getattr(_tm, attr)
-            setattr(_tm, attributes[-1], eval(str(value))) # TODO: calcul sur le frontend plutôt ?
+            setattr(_tm, attributes[-1], eval(str(value)))
     
+    # Flag (warings, errors, ...)
     if nested_api.get("flags") != None:
         if nested_tm.value == 0:
             return 0, nested_api
-        return nested_tm.value, nested_api # retourner flags plutot que valeur ?
+        return nested_tm.value, nested_api # return flag instead of value ?
 
+    # List of endpoints
     if nested_api.get("remote_attributes") != None:
-        return dumps(nested_tm, default=str), nested_api # n'est pas un endpoint, retourner la liste ?
+        return dumps(nested_tm, default=str), nested_api # return string list ?
 
-    # if not nested_api.get("dtype"):
-    #     return None, 0
-
-    if nested_api.get("arguments") != None: # est une fonction (peux retourner valeur !)
+    # Function
+    if nested_api.get("arguments") != None:
         if len(nested_api.get("arguments")) == 0:
             nested_tm()
 
@@ -89,8 +90,6 @@ def process_api(path, value):
                 nested_tm(*args_value)
             else:
                 raise Exception("Le nombre d'argument(s) ne correspond pas.")
-        # {'name': 'move_to', 'summary': 'Move to target position respecting velocity and acceleration limits.', 'caller_name': 'planner_move_to_vlimit', 'dtype': 'void', 'arguments': [{'name': 'pos_setpoint', 'dtype': 'float', 'unit': 'tick'}]}
-        # {'name': 'set_pos_vel_setpoints', 'summary': 'Set the position and velocity setpoints in one go, and retrieve the position estimate', 'caller_name': 'controller_set_pos_vel_setpoints', 'dtype': 'float', 'arguments': [{'name': 'pos_setpoint', 'dtype': 'float', 'unit': 'tick'}, {'name': 'vel_setpoint', 'dtype': 'float', 'unit': 'tick'}]}
 
     if nested_api.get("dtype") in ['uint8']:
         try:

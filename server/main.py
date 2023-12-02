@@ -19,7 +19,6 @@ def format(id, data):
 
 class Config:
     SERVER_PORT = 8000
-    PING_INTERVAL = 10 # default (20)
 
 class BaseService:
     def __init__(self, websocket, db_session):
@@ -27,9 +26,6 @@ class BaseService:
         self.incoming = asyncio.Queue()
         self.outgoing = asyncio.Queue()
         self.db = db_session
-
-    async def send_session(self):
-        await self.ws.send('{"session_id": 1}')
 
     async def get_message(self):
         message = await self.ws.recv()
@@ -57,7 +53,7 @@ class BaseService:
 
         except ResponseError as e:
             logger.warning(e)
-            # TODO: tenter reconnexion à un appareil
+            # TODO: try reconnect to the device ?
             # self.empty_queue()
             return await self.outgoing.put(format("1", "DEVICE_NOT_FOUND"))
         except Exception as e:
@@ -70,16 +66,10 @@ class BaseService:
         await self.ws.send(message)
 
     async def produce(self):
-        # TODO: envoyer les données en continue
-        # idée : le client envoi les requêtes (avec frequence ?)
-        #        le serveur les enregistre et envoi en boucle ces requêtes
-        # value, _ = process_api("tm1", "")
-        # await self.ws.send(format("1", value))
         return not self.outgoing.empty()
     
     async def consume(self):
         ...
-        # print('Consuming')
 
     def empty_queue(self):
         while not self.incoming.empty():
@@ -92,7 +82,6 @@ class BaseService:
 class WebsocketServer:
     def __init__(self, db_session=None):
         self.loop = asyncio.new_event_loop()
-        # self.loop1 = asyncio.new_event_loop()
         self.db_session = db_session
         self.clients = set()
 
@@ -104,10 +93,8 @@ class WebsocketServer:
         asyncio.get_event_loop().run_forever()
 
     async def handler(self, websocket, path):
-        # print(f"Received websocket client on {path}")
         self.clients.add(websocket)
         master = BaseService(websocket, self.db_session)
-        await master.send_session()
         try:
             while websocket.open:
                 listener_task = asyncio.ensure_future(master.get_message())
