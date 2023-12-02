@@ -20,6 +20,8 @@
   "idle": "Idle",
   "import-config": "Import configuration",
   "language": "Language",
+  "macro-already-exist": "A macro already exist with this name!",
+  "macro-name-required": "Name required!",
   "macros": "Macros",
   "move-down": "Move down",
   "move-up": "Move up",
@@ -43,7 +45,5 @@
   "trajectory-planner": "Trajectory Planner",
   "value": "Value",
   "velocity": "Velocity",
-  "view": "View",
-  "macro-name-required": "Name required!",
-  "macro-already-exist": "A macro already exist with this name!"
+  "view": "View"
 }
