@@ -1,5 +1,5 @@
 # Tinymovr Control
-Tinymovr Control is a user-friendly interface that help control Tinymovr boards. This application communicate with Tinymovr boards via the provided Python server.
+Tinymovr Control is a user-friendly interface that help control Tinymovr boards. This application communicate with Tinymovr boards via the provided [Python server](server).
 
 >*This project is not affiliated with or endorsed by the Tinymovr company. It's an independent initiative developed for me and made available to the community.
 Any references to company name, trademark, or logo are used for identification purposes only and do not imply any endorsement or affiliation.*
