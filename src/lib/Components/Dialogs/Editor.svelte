@@ -5,6 +5,7 @@
     import { _ } from "svelte-i18n";
     import { onDestroy, onMount } from "svelte";
     import type * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
+    import loader from '@monaco-editor/loader';
     import { currentTheme } from "$lib/DarkMode";
     import type { Macro } from "$lib/interfaces";
     import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -50,7 +51,8 @@
         };
 
         const Monaco = await import("monaco-editor");
-        
+        monaco = await loader.init();
+
         Monaco.editor.defineTheme("dark", {
             base: "vs-dark",
             inherit: true,
