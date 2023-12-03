@@ -40,7 +40,7 @@ start_time = time.time()
 while len(user_ns) == 0:
     elapsed_time = time.time() - start_time
     if elapsed_time >= 5:
-        print("aucun device trouvé !")
+        print("No device(s) found!")
         sys.exit()
 
 def process_api(path, value):
