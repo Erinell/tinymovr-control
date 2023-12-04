@@ -68,10 +68,10 @@
             </div>
             <Separator class="my-2" />
 
-            <div class="flex">
-              <form class="flex items-center space-x-2 flex-row">
+            <div class="grid gap-2">
+              <form class="flex items-center space-x-2">
                 <Input
-                  class="max-w-[8rem]"
+                  class="w-16 lg:w-20 xl:w-28 2xl:w-36"
                   placeholder="setpoint"
                   type="number"
                   bind:value={position_setpoint}
@@ -89,16 +89,16 @@
                 >
                   <SendHorizontal class="w-5 h-5" />
                 </Button>
+                <h3 class="mx-4 w-16 text-primary">
+                  {parseInt(
+                    $device?.data["controller.position.setpoint"] ?? "0",
+                  )}
+                </h3>
               </form>
-              <h3 class="mx-4 w-16 text-primary">
-                {parseInt($device?.data["controller.position.setpoint"] ?? "0")}
-              </h3>
-            </div>
 
-            <div class="flex mt-2">
-              <form class="flex items-center space-x-2 flex-row">
+              <form class="flex items-center space-x-2">
                 <Input
-                  class="max-w-[8rem]"
+                  class="w-16 lg:w-20 xl:w-28 2xl:w-36"
                   placeholder="p_gain"
                   type="number"
                   bind:value={p_gain}
@@ -113,10 +113,12 @@
                 >
                   <SendHorizontal class="w-5 h-5" />
                 </Button>
+                <h3 class="mx-4 min-w-[4rem] text-primary">
+                  {parseFloat(
+                    $device?.data["controller.position.p_gain"] ?? "0",
+                  )}
+                </h3>
               </form>
-              <h3 class="mx-4 min-w-[4rem] text-primary">
-                {parseFloat($device?.data["controller.position.p_gain"] ?? "0")}
-              </h3>
             </div>
           </Card.Content>
         </Card.Root>
@@ -141,10 +143,10 @@
             </div>
             <Separator class="my-2" />
 
-            <div class="flex" id="velocity_setpoint">
-              <form class="flex items-center space-x-2 flex-row">
+            <div class="grid gap-2">
+              <form class="flex items-center space-x-2 flex-row" novalidate>
                 <Input
-                  class="max-w-[8rem]"
+                  class="w-16 lg:w-20 xl:w-28 2xl:w-36"
                   placeholder="setpoint"
                   type="number"
                   bind:value={velocity_setpoint}
@@ -162,16 +164,15 @@
                 >
                   <SendHorizontal class="w-5 h-5" />
                 </Button>
+                <h3 class="mx-4 w-16 text-primary">
+                  {parseInt(
+                    $device?.data["controller.velocity.setpoint"] ?? "0",
+                  )}
+                </h3>
               </form>
-              <h3 class="mx-4 w-16 text-primary">
-                {parseInt($device?.data["controller.velocity.setpoint"] ?? "0")}
-              </h3>
-            </div>
-
-            <div class="flex mt-2" id="velocity_limit">
-              <form class="flex items-center space-x-2 flex-row">
+              <form class="flex items-center space-x-2 flex-row" novalidate>
                 <Input
-                  class="max-w-[8rem]"
+                  class="w-16 lg:w-20 xl:w-28 2xl:w-36"
                   placeholder="limit"
                   type="number"
                   bind:value={limit}
@@ -186,25 +187,15 @@
                 >
                   <SendHorizontal class="w-5 h-5" />
                 </Button>
+                <h3 class="mx-4 min-w-[4rem] text-primary">
+                  {parseFloat(
+                    $device?.data["controller.velocity.limit"] ?? "0",
+                  )}
+                </h3>
               </form>
-              <h3 class="mx-4 min-w-[4rem] text-primary">
-                {parseFloat($device?.data["controller.velocity.limit"] ?? "0")}
-              </h3>
-            </div>
-
-            <!-- <div class="flex mt-2 w-3/4" id="velocity_limit">
-              <form class="flex w-full items-center space-x-2 flex-row">
-                <Slider value={[50]} max={$device?.data["controller.velocity.limit"]} step={100} class="max-w-[8rem]"/>
-              </form>
-              <h3 class="mx-4 min-w-[4rem] text-primary">
-                {parseFloat($device?.data["controller.velocity.limit"] ?? "0")}
-              </h3>
-            </div> -->
-
-            <div class="flex mt-2" id="velocity_p_gain">
               <form class="flex items-center space-x-2 flex-row" novalidate>
                 <Input
-                  class="max-w-[8rem]"
+                  class="w-16 lg:w-20 xl:w-28 2xl:w-36"
                   placeholder="p_gain"
                   type="number"
                   bind:value={velocity_p_gain}
@@ -222,16 +213,15 @@
                 >
                   <SendHorizontal class="w-5 h-5" />
                 </Button>
+                <h3 class="mx-4 min-w-[4rem] text-primary">
+                  {parseFloat(
+                    $device?.data["controller.velocity.p_gain"] ?? "0",
+                  )}
+                </h3>
               </form>
-              <h3 class="mx-4 min-w-[4rem] text-primary">
-                {parseFloat($device?.data["controller.velocity.p_gain"] ?? "0")}
-              </h3>
-            </div>
-
-            <div class="flex mt-2" id="velocity_i_gain">
               <form class="flex items-center space-x-2 flex-row" novalidate>
                 <Input
-                  class="max-w-[8rem]"
+                  class="w-16 lg:w-20 xl:w-28 2xl:w-36"
                   placeholder="i_gain"
                   type="number"
                   bind:value={i_gain}
@@ -246,16 +236,15 @@
                 >
                   <SendHorizontal class="w-5 h-5" />
                 </Button>
+                <h3 class="mx-4 min-w-[4rem] text-primary">
+                  {parseFloat(
+                    $device?.data["controller.velocity.i_gain"] ?? "0",
+                  )}
+                </h3>
               </form>
-              <h3 class="mx-4 min-w-[4rem] text-primary">
-                {parseFloat($device?.data["controller.velocity.i_gain"] ?? "0")}
-              </h3>
-            </div>
-
-            <div class="flex mt-2" id="velocity_deadband">
               <form class="flex items-center space-x-2 flex-row" novalidate>
                 <Input
-                  class="max-w-[8rem]"
+                  class="w-16 lg:w-20 xl:w-28 2xl:w-36"
                   placeholder="deadband"
                   type="number"
                   bind:value={deadband}
@@ -270,18 +259,15 @@
                 >
                   <SendHorizontal class="w-5 h-5" />
                 </Button>
+                <h3 class="mx-4 min-w-[4rem] text-primary">
+                  {parseFloat(
+                    $device?.data["controller.velocity.deadband"] ?? "0",
+                  )}
+                </h3>
               </form>
-              <h3 class="mx-4 min-w-[4rem] text-primary">
-                {parseFloat(
-                  $device?.data["controller.velocity.deadband"] ?? "0",
-                )}
-              </h3>
-            </div>
-
-            <div class="flex mt-2" id="velocity_increment">
               <form class="flex items-center space-x-2 flex-row" novalidate>
                 <Input
-                  class="max-w-[8rem]"
+                  class="w-16 lg:w-20 xl:w-28 2xl:w-36"
                   placeholder="increment"
                   type="number"
                   bind:value={increment}
@@ -296,12 +282,12 @@
                 >
                   <SendHorizontal class="w-5 h-5" />
                 </Button>
+                <h3 class="mx-4 min-w-[4rem] text-primary">
+                  {parseFloat(
+                    $device?.data["controller.velocity.increment"] ?? "0",
+                  )}
+                </h3>
               </form>
-              <h3 class="mx-4 min-w-[4rem] text-primary">
-                {parseFloat(
-                  $device?.data["controller.velocity.increment"] ?? "0",
-                )}
-              </h3>
             </div>
           </Card.Content>
         </Card.Root>
