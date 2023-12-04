@@ -29,12 +29,10 @@
   function copy(code: string) {
     navigator.clipboard.writeText(toDiscord(code)).then(
       function () {
-        toastsStore.success(
-          "Données copiées dans le presse-papiers, collez juste dans Discord !"
-        );
+        toastsStore.success($_("data-copied-discord"));
       },
       function (err) {
-        toastsStore.success("impossible de copier les données : " + err);
+        toastsStore.success(`${$_("unable-copy-data")}. ${err}`);
       }
     );
   }

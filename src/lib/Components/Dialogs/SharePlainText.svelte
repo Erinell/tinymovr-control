@@ -24,10 +24,10 @@
   function copy() {
     navigator.clipboard.writeText(code).then(
       function () {
-        toastsStore.success("Configuration copiée dans le presse-papiers !");
+        toastsStore.success($_("config-copied"));
       },
       function (err) {
-        toastsStore.success("impossible de copier la configuration : " + err);
+        toastsStore.success(`${$_("unable-copy-config")}. ${err}`);
       }
     );
   }
