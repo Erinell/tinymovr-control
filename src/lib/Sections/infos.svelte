@@ -47,6 +47,18 @@
           {$device?.data["errors"] ?? "-"}
         </h3>
       </Card.Content>
+      <Card.Content>
+        <h4>State</h4>
+        <h3 class="text-primary tracking-wide">
+          {$device?.data["controller.state"] ?? "-"}
+        </h3>
+      </Card.Content>
+      <Card.Content>
+        <h4>Mode</h4>
+        <h3 class="text-primary tracking-wide">
+          {$device?.data["controller.mode"] ?? "-"}
+        </h3>
+      </Card.Content>
     </Card.Root>
     <div class="flex">
       <Card.Root class="w-1/4 mr-2">

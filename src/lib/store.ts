@@ -320,6 +320,8 @@ const defaultLoops = writable([
       "temp",
       "errors",
       "calibrated",
+      "controller.state",
+      "controller.mode",
       "controller.position.",
       "controller.velocity.",
     ],
