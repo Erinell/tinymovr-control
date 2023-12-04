@@ -12,24 +12,36 @@ Any references to company name, trademark, or logo are used for identification p
 Communicate with Tinymovr boards through WebSocket ensures real-time responsiveness, locally or remotely.
 
 ### Customizable Interface
-<img align="left" height="100" src="docs/overview.png?raw=true">
-</br>
-User-friendly interface (almost) fully customizable designed to control and use boards efficiently.
+<dl>
+  <dd>
+    <img align="left" height="100" src="docs/overview.png?raw=true">
+    </br>
+    User-friendly interface (almost) fully customizable designed to control and use boards efficiently.
+    </div>
+  </dd>
+</dl>
 
-</br></br>
+</br>
 
 ### Programmable macro
-<img align="left" height="100" src="docs/macros.png?raw=true">
-</br>
-Program macros via the integrate editor with a simple language to send instructions or create logics. <a href="https://github.com/Erinell/tinymovr-control/wiki/Macros-interpreter">see wiki</a>
+<dl>
+  <dd>
+    <img align="left" height="100" src="docs/macros.png?raw=true">
+    </br>
+    Program macros via the integrate editor with a simple language to send instructions or create logics. <a href="https://github.com/Erinell/tinymovr-control/wiki/Macros-interpreter">see wiki</a>
+  </dd>
+</dl>
 
-</br></br>
+</br>
 
 ### Trajectory Planner 
-<img align="left" height="100" src="docs/trajectory-planner.png?raw=true">
-</br>
-Generate a trajectory easily by adding multiples accelerations, positions and decelerations.
-
+<dl>
+  <dd>
+    <img align="left" height="100" src="docs/trajectory-planner.png?raw=true">
+    </br>
+    Generate a trajectory easily by adding multiples accelerations, positions and decelerations.
+  </dd>
+</dl>
 </br></br>
 
 ## Getting Started
