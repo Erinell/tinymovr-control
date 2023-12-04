@@ -5,7 +5,6 @@
     import { _ } from "svelte-i18n";
     import { onDestroy, onMount } from "svelte";
     import type * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
-    import loader from '@monaco-editor/loader';
     import { currentTheme } from "$lib/DarkMode";
     import type { Macro } from "$lib/interfaces";
     import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -50,10 +49,12 @@
             }
         };
 
-        const Monaco = await import("monaco-editor");
-        monaco = await loader.init();
+        monaco = await import("monaco-editor");
+        // monaco = Monaco;
+        // monaco = await loader.init();
+        
 
-        Monaco.editor.defineTheme("dark", {
+        monaco.editor.defineTheme("dark", {
             base: "vs-dark",
             inherit: true,
             rules: [
@@ -198,7 +199,7 @@
             },
         });
 
-        Monaco.editor.defineTheme("light", {
+        monaco.editor.defineTheme("light", {
             base: "vs",
             inherit: true,
             rules: [
@@ -355,10 +356,10 @@
             },
         });
 
-        Monaco.languages.register({ id: "custom" });
+        monaco.languages.register({ id: "custom" });
         let keywords = ["print", "if", "else", "while", "sleep", "send"];
 
-        Monaco.languages.setMonarchTokensProvider("custom", {
+        monaco.languages.setMonarchTokensProvider("custom", {
             keywords,
             tokenizer: {
                 root: [
@@ -378,7 +379,7 @@
             },
         });
 
-        Monaco.languages.registerCompletionItemProvider("custom", {
+        monaco.languages.registerCompletionItemProvider("custom", {
             provideCompletionItems: (model, position) => {
                 var word = model.getWordUntilPosition(position);
                 var range = {
@@ -393,7 +394,7 @@
                         kind: monaco.languages.CompletionItemKind.Keyword,
                         insertText: "print('${1:text}');",
                         insertTextRules:
-                            monaco.languages.CompletionItemInsertTextRule
+                        monaco.languages.CompletionItemInsertTextRule
                                 .InsertAsSnippet,
                         range: range,
                     },
@@ -404,7 +405,7 @@
                             "\n",
                         ),
                         insertTextRules:
-                            monaco.languages.CompletionItemInsertTextRule
+                        monaco.languages.CompletionItemInsertTextRule
                                 .InsertAsSnippet,
                         documentation: "If Statement",
                         range: range,
@@ -420,7 +421,7 @@
                             "}",
                         ].join("\n"),
                         insertTextRules:
-                            monaco.languages.CompletionItemInsertTextRule
+                        monaco.languages.CompletionItemInsertTextRule
                                 .InsertAsSnippet,
                         documentation: "If Else Statement",
                         range: range,
@@ -430,7 +431,7 @@
                         kind: monaco.languages.CompletionItemKind.Snippet,
                         insertText: ["else {", "\t$0", "}"].join("\n"),
                         insertTextRules:
-                            monaco.languages.CompletionItemInsertTextRule
+                        monaco.languages.CompletionItemInsertTextRule
                                 .InsertAsSnippet,
                         documentation: "Else Statement",
                         range: range,
@@ -444,7 +445,7 @@
                             "}",
                         ].join("\n"),
                         insertTextRules:
-                            monaco.languages.CompletionItemInsertTextRule
+                        monaco.languages.CompletionItemInsertTextRule
                                 .InsertAsSnippet,
                         documentation: "While Statement",
                         range: range,
@@ -454,7 +455,7 @@
                         kind: monaco.languages.CompletionItemKind.Keyword,
                         insertText: "send('${1:endpoint}');",
                         insertTextRules:
-                            monaco.languages.CompletionItemInsertTextRule
+                        monaco.languages.CompletionItemInsertTextRule
                                 .InsertAsSnippet,
                         documentation: "Send request to the device",
                         range: range,
@@ -464,7 +465,7 @@
                         kind: monaco.languages.CompletionItemKind.Keyword,
                         insertText: "send('${1:endpoint}', ${2:value});",
                         insertTextRules:
-                            monaco.languages.CompletionItemInsertTextRule
+                        monaco.languages.CompletionItemInsertTextRule
                                 .InsertAsSnippet,
                         documentation: "Send request with value to the device",
                         range: range,
@@ -474,7 +475,7 @@
             },
         });
 
-        editor = Monaco.editor.create(editorContainer, {
+        editor = monaco.editor.create(editorContainer, {
             value: macro.code,
             language: "custom",
             theme,
