@@ -10,6 +10,7 @@ enum EventPhase {
 
 export class WebSocketManager {
     url: string;
+    port: number;
     socket: WebSocket | null;
     keyCallbacks: any;
     autoconnect: boolean;
@@ -18,8 +19,9 @@ export class WebSocketManager {
     onUpdateHandler: (data: any) => void;
     onErrorHandler: (eventPhase: number) => void;
 
-    constructor(url: string) {
-        this.url = url;
+    constructor() {
+        this.url = "localhost";
+        this.port = 8000;
         this.socket = null;
         this.keyCallbacks = {};
         this.autoconnect = false;
@@ -29,9 +31,13 @@ export class WebSocketManager {
         this.onErrorHandler = (eventPhase: number) => { };
     }
 
-    connect() {
+    connect(ip: string | null = this.url) {
+        if (ip) this.url = ip;
+
         return new Promise((resolve, reject) => {
-            this.socket = new WebSocket(`ws://${this.url}`);
+            console.info(this.url);
+
+            this.socket = new WebSocket(`ws://${this.url}:${this.port}`);
             this.socket.onopen = () => {
                 console.info(`[WebSocket] Connected to the server`);
                 resolve(true);
@@ -59,7 +65,7 @@ export class WebSocketManager {
             this.socket.onerror = (error) => {
                 switch (error.eventPhase) {
                     case EventPhase.target:
-                        console.error(`[WebSocket] (${EventPhase[error.eventPhase]}) Unable to connect to the server`);
+                        console.error(`[WebSocket] (${EventPhase[error.eventPhase]}) Unable to connect to the server ${this.url}:${this.port}`);
                         break;
                     default:
                         console.error(`[WebSocket] (${EventPhase[error.eventPhase]})`);
@@ -113,5 +119,3 @@ export class WebSocketManager {
         }
     }
 }
-
-export const websocket = new WebSocketManager("192.168.1.42:8000");

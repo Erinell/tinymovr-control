@@ -1,3 +1,8 @@
+<script context="module">
+  import { WebSocketManager } from "$lib/WebSocket";
+  export let websocket = new WebSocketManager();
+</script>
+
 <script lang="ts">
   import {
     Sun,
@@ -8,22 +13,21 @@
   } from "lucide-svelte";
   import { Button, Separator, Input, Switch, Label, Tooltip } from "$lib/index";
   import Menu from "$lib/Components/Tools/Menu.svelte";
-  import type { WebSocketManager } from "$lib/WebSocket";
-  import { device } from "$lib/store";
+  import { device, ip_addresses } from "$lib/store";
   import { toggleTheme, currentTheme } from "$lib/DarkMode";
   import RequestsApi from "$lib/Components/Tools/RequestsAPI.svelte";
   import { _ } from "svelte-i18n";
   import { toastsStore } from "$lib/Components/ui/toast";
   import { console_visible } from "$lib/Components/Console";
-
+  import IpAddress from "$lib/Components/Tools/IPAddress.svelte";
   $: theme = currentTheme;
   let apiMode = true;
   let cmd = "";
   let value: number;
+  let ip: string;
 
   export let connecting: boolean;
   export let connected: boolean;
-  export let websocket: WebSocketManager;
   export let close = () => {};
 
   function toggleMode() {
@@ -97,22 +101,37 @@
       {:else}
         <Tooltip.Root>
           <Tooltip.Trigger asChild let:builder>
-            <Button
-              builders={[builder]}
-              on:click={() => {
-                websocket.connect();
-                connecting = true;
-              }}
-              disabled={connecting}
-            >
-              {#if connecting}
-                <Loader2 class="mr-2 h-6 w-6 animate-spin" />
-              {/if}
-              {$_("connection")}
-            </Button>
+            <form class="flex w-full max-w-min items-center gap-2">
+              <IpAddress bind:value={ip} />
+              <Button
+                builders={[builder]}
+                on:click={() => {
+                  if (
+                    ip &&
+                    !ip.match(/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}|localhost$/)
+                  )
+                    return toastsStore.error("Invalid IP address");
+                  connecting = true;
+                  websocket.connect(ip).then(() => {
+                    if (!$ip_addresses.includes(ip))
+                      $ip_addresses = [...$ip_addresses, ip];
+                  });
+                }}
+                disabled={connecting}
+                type="submit"
+              >
+                {#if connecting}
+                  <Loader2 class="mr-2 h-6 w-6 animate-spin" />
+                {/if}
+                {$_("connection")}
+              </Button>
+            </form>
           </Tooltip.Trigger>
           <Tooltip.Content>
-            <p>Connect to the server</p>
+            <p>
+              Connect to the server <br />(default ip:
+              <strong>localhost</strong>)
+            </p>
           </Tooltip.Content>
         </Tooltip.Root>
       {/if}
@@ -125,7 +144,7 @@
             size="icon"
             on:click={() => ($console_visible = !$console_visible)}
           >
-            <ChevronRightSquare className="h-4 w-4" />
+            <ChevronRightSquare />
           </Button>
         </Tooltip.Trigger>
         <Tooltip.Content>
@@ -142,9 +161,9 @@
             on:click={toggleMode}
           >
             {#if $currentTheme === "light"}
-              <Sun className="h-4 w-4" />
+              <Sun />
             {:else}
-              <Moon className="h-4 w-4" />
+              <Moon />
             {/if}
           </Button>
         </Tooltip.Trigger>
