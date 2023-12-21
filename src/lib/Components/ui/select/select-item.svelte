@@ -5,7 +5,7 @@
 
 	type $$Props = SelectPrimitive.ItemProps & {
 		inset?: boolean;
-	};;
+	};
 	type $$Events = SelectPrimitive.ItemEvents;
 
 	let className: $$Props["class"] = undefined;
@@ -23,7 +23,7 @@
 	class={cn(
 		"relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 pr-2 text-sm outline-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 		inset && "pl-8",
-		className
+		className,
 	)}
 	{...$$restProps}
 	on:click
@@ -33,10 +33,15 @@
 	on:pointerleave
 	on:pointermove
 >
-	<span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-		<SelectPrimitive.ItemIndicator>
-			<Check class="h-4 w-4" />
-		</SelectPrimitive.ItemIndicator>
-	</span>
+	{#if inset}
+		<span
+			class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center"
+		>
+			<SelectPrimitive.ItemIndicator>
+				<Check class="h-4 w-4" />
+			</SelectPrimitive.ItemIndicator>
+		</span>
+	{/if}
+
 	<slot />
 </SelectPrimitive.Item>

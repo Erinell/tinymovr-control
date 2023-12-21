@@ -10,9 +10,9 @@
     remove_sections,
     macros,
     loop,
+    ip_addresses,
   } from "$lib/store";
-  import { websocket } from "$lib/WebSocket";
-  import Header from "./Header.svelte";
+  import Header, { websocket } from "./Header.svelte";
   import { _ } from "svelte-i18n";
   import Grid, { GridItem } from "svelte-grid-extended";
   import { applyTheme } from "$lib/DarkMode";
@@ -46,6 +46,11 @@
     localStorage.setItem("macros", JSON.stringify(v));
   });
 
+  ip_addresses.subscribe((ip) => {
+    if (!browser) return;
+    localStorage.setItem("ip", JSON.stringify(ip));
+  })
+
   onMount(() => {
     applyTheme();
 
@@ -73,7 +78,7 @@
 
     websocket.onErrorHandler = () => {
       if (connecting) {
-        toastsStore.error($_("connection-unable"), 5000);
+        toastsStore.error($_("connection-unable") + ` ${websocket.url}:${websocket.port}`, 5000);
       }
       connecting = false;
     };
@@ -122,7 +127,7 @@
 
 <Toast />
 <Console />
-<Header {close} bind:connecting bind:connected {websocket} />
+<Header {close} bind:connecting bind:connected />
 
 <div class="content">
   <div class="sidebar w-24">

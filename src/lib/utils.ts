@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
+import type { Config } from "./interfaces";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -105,4 +106,18 @@ export function formatAPI(api: any) {
   }
 
   return formatted;
+}
+
+export function isConfig(obj: any): obj is Config {
+  try {
+    return (
+      typeof obj.size.rows === 'number' &&
+      typeof obj.size.cols === 'number' &&
+      typeof obj.showTitles === "boolean" &&
+      typeof obj.charts === "object" &&
+      typeof obj.traj_planner === "object"  &&
+      typeof obj.sections === "object");
+  } catch (error) {
+    return false;
+  }
 }

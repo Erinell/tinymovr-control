@@ -7,11 +7,11 @@
     import type * as Monaco from "monaco-editor/esm/vs/editor/editor.api";
     import { currentTheme } from "$lib/DarkMode";
     import type { Macro } from "$lib/interfaces";
-    import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-    import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
-    import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
-    import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
-    import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+    import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
+    import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
+    import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
+    import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
+    import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 
     export let onClose = () => {
         open = false;
@@ -25,6 +25,7 @@
     let monaco: typeof Monaco;
     let editorContainer: HTMLElement;
     let loaded = false;
+    let disposeCompletion = () => {};
 
     onMount(async () => {
         load();
@@ -33,26 +34,27 @@
     async function load() {
         self.MonacoEnvironment = {
             getWorker: function (_moduleId: any, label: string) {
-                if (label === 'json') {
+                if (label === "json") {
                     return new jsonWorker();
                 }
-                if (label === 'css' || label === 'scss' || label === 'less') {
+                if (label === "css" || label === "scss" || label === "less") {
                     return new cssWorker();
                 }
-                if (label === 'html' || label === 'handlebars' || label === 'razor') {
+                if (
+                    label === "html" ||
+                    label === "handlebars" ||
+                    label === "razor"
+                ) {
                     return new htmlWorker();
                 }
-                if (label === 'typescript' || label === 'javascript') {
+                if (label === "typescript" || label === "javascript") {
                     return new tsWorker();
                 }
                 return new editorWorker();
-            }
+            },
         };
 
         monaco = await import("monaco-editor");
-        // monaco = Monaco;
-        // monaco = await loader.init();
-        
 
         monaco.editor.defineTheme("dark", {
             base: "vs-dark",
@@ -355,10 +357,12 @@
                 "editorWhitespace.foreground": "#BBBBBB",
             },
         });
-
-        monaco.languages.register({ id: "custom" });
+        
+        if(!monaco.languages.getLanguages().find(lang => lang.id === "custom")) {
+            monaco.languages.register({ id: "custom" });
+        }
         let keywords = ["print", "if", "else", "while", "sleep", "send"];
-
+        
         monaco.languages.setMonarchTokensProvider("custom", {
             keywords,
             tokenizer: {
@@ -379,101 +383,108 @@
             },
         });
 
-        monaco.languages.registerCompletionItemProvider("custom", {
-            provideCompletionItems: (model, position) => {
-                var word = model.getWordUntilPosition(position);
-                var range = {
-                    startLineNumber: position.lineNumber,
-                    endLineNumber: position.lineNumber,
-                    startColumn: word.startColumn,
-                    endColumn: word.endColumn,
-                };
-                var suggestions = [
-                    {
-                        label: "print",
-                        kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: "print('${1:text}');",
-                        insertTextRules:
-                        monaco.languages.CompletionItemInsertTextRule
-                                .InsertAsSnippet,
-                        range: range,
-                    },
-                    {
-                        label: "if",
-                        kind: monaco.languages.CompletionItemKind.Snippet,
-                        insertText: ["if (${1:condition}) {", "\t$0", "}"].join(
-                            "\n",
-                        ),
-                        insertTextRules:
-                        monaco.languages.CompletionItemInsertTextRule
-                                .InsertAsSnippet,
-                        documentation: "If Statement",
-                        range: range,
-                    },
-                    {
-                        label: "if else",
-                        kind: monaco.languages.CompletionItemKind.Snippet,
-                        insertText: [
-                            "if (${1:condition}) {",
-                            "\t$0",
-                            "} else {",
-                            "\t$0",
-                            "}",
-                        ].join("\n"),
-                        insertTextRules:
-                        monaco.languages.CompletionItemInsertTextRule
-                                .InsertAsSnippet,
-                        documentation: "If Else Statement",
-                        range: range,
-                    },
-                    {
-                        label: "else",
-                        kind: monaco.languages.CompletionItemKind.Snippet,
-                        insertText: ["else {", "\t$0", "}"].join("\n"),
-                        insertTextRules:
-                        monaco.languages.CompletionItemInsertTextRule
-                                .InsertAsSnippet,
-                        documentation: "Else Statement",
-                        range: range,
-                    },
-                    {
-                        label: "while",
-                        kind: monaco.languages.CompletionItemKind.Snippet,
-                        insertText: [
-                            "while (${1:expression}) {",
-                            "\t$0",
-                            "}",
-                        ].join("\n"),
-                        insertTextRules:
-                        monaco.languages.CompletionItemInsertTextRule
-                                .InsertAsSnippet,
-                        documentation: "While Statement",
-                        range: range,
-                    },
-                    {
-                        label: "send",
-                        kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: "send('${1:endpoint}');",
-                        insertTextRules:
-                        monaco.languages.CompletionItemInsertTextRule
-                                .InsertAsSnippet,
-                        documentation: "Send request to the device",
-                        range: range,
-                    },
-                    {
-                        label: "send value",
-                        kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: "send('${1:endpoint}', ${2:value});",
-                        insertTextRules:
-                        monaco.languages.CompletionItemInsertTextRule
-                                .InsertAsSnippet,
-                        documentation: "Send request with value to the device",
-                        range: range,
-                    },
-                ];
-                return { suggestions: suggestions };
+        const { dispose } = monaco.languages.registerCompletionItemProvider(
+            "custom",
+            {
+                provideCompletionItems: (model, position) => {
+                    var word = model.getWordUntilPosition(position);
+                    var range = {
+                        startLineNumber: position.lineNumber,
+                        endLineNumber: position.lineNumber,
+                        startColumn: word.startColumn,
+                        endColumn: word.endColumn,
+                    };
+                    var suggestions = [
+                        {
+                            label: "print",
+                            kind: monaco.languages.CompletionItemKind.Keyword,
+                            insertText: "print('${1:text}');",
+                            insertTextRules:
+                                monaco.languages.CompletionItemInsertTextRule
+                                    .InsertAsSnippet,
+                            range: range,
+                        },
+                        {
+                            label: "if",
+                            kind: monaco.languages.CompletionItemKind.Snippet,
+                            insertText: [
+                                "if (${1:condition}) {",
+                                "\t$0",
+                                "}",
+                            ].join("\n"),
+                            insertTextRules:
+                                monaco.languages.CompletionItemInsertTextRule
+                                    .InsertAsSnippet,
+                            documentation: "If Statement",
+                            range: range,
+                        },
+                        {
+                            label: "if else",
+                            kind: monaco.languages.CompletionItemKind.Snippet,
+                            insertText: [
+                                "if (${1:condition}) {",
+                                "\t$0",
+                                "} else {",
+                                "\t$0",
+                                "}",
+                            ].join("\n"),
+                            insertTextRules:
+                                monaco.languages.CompletionItemInsertTextRule
+                                    .InsertAsSnippet,
+                            documentation: "If Else Statement",
+                            range: range,
+                        },
+                        {
+                            label: "else",
+                            kind: monaco.languages.CompletionItemKind.Snippet,
+                            insertText: ["else {", "\t$0", "}"].join("\n"),
+                            insertTextRules:
+                                monaco.languages.CompletionItemInsertTextRule
+                                    .InsertAsSnippet,
+                            documentation: "Else Statement",
+                            range: range,
+                        },
+                        {
+                            label: "while",
+                            kind: monaco.languages.CompletionItemKind.Snippet,
+                            insertText: [
+                                "while (${1:expression}) {",
+                                "\t$0",
+                                "}",
+                            ].join("\n"),
+                            insertTextRules:
+                                monaco.languages.CompletionItemInsertTextRule
+                                    .InsertAsSnippet,
+                            documentation: "While Statement",
+                            range: range,
+                        },
+                        {
+                            label: "send",
+                            kind: monaco.languages.CompletionItemKind.Keyword,
+                            insertText: "send('${1:endpoint}');",
+                            insertTextRules:
+                                monaco.languages.CompletionItemInsertTextRule
+                                    .InsertAsSnippet,
+                            documentation: "Send request to the device",
+                            range: range,
+                        },
+                        {
+                            label: "send value",
+                            kind: monaco.languages.CompletionItemKind.Keyword,
+                            insertText: "send('${1:endpoint}', ${2:value});",
+                            insertTextRules:
+                                monaco.languages.CompletionItemInsertTextRule
+                                    .InsertAsSnippet,
+                            documentation:
+                                "Send request with value to the device",
+                            range: range,
+                        },
+                    ];
+                    return { suggestions: suggestions };
+                },
             },
-        });
+        );
+        disposeCompletion = dispose;
 
         editor = monaco.editor.create(editorContainer, {
             value: macro.code,
@@ -484,8 +495,8 @@
     }
 
     onDestroy(() => {
-        monaco?.editor.getModels().forEach((model) => model.dispose());
-        editor?.dispose();
+        editor.dispose();
+        disposeCompletion();
     });
 </script>
 

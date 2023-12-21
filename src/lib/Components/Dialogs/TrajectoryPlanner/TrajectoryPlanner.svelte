@@ -331,7 +331,7 @@
       </div>
       <Dialog.Footer>
         <div class="flex items-center space-x-2 w-full">
-          <Switch id="loop" onCheckedChange={(checked) => loop.set(checked)} />
+          <Switch id="loop" bind:checked={$loop} />
           <Label for="loop" class="text-md">Loop mode</Label>
         </div>
 

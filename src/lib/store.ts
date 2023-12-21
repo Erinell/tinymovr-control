@@ -38,6 +38,12 @@ function loadConfig() {
   return config ? JSON.parse(config) : null;
 }
 
+function loadIP(){
+  if (!browser) return;
+  const ip_addresses = localStorage.getItem("ip");
+  return ip_addresses ? JSON.parse(ip_addresses): null;
+}
+
 function loadMacros() {
   if (!browser) return;
   const macros = localStorage.getItem("macros");
@@ -376,3 +382,5 @@ function create_loop() {
 
 export const editable_sections = writable<boolean>(false);
 export const remove_sections = writable<boolean>(false);
+
+export const ip_addresses = writable<String[]>(loadIP() ?? []);
