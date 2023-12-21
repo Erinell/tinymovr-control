@@ -31,14 +31,11 @@ export class WebSocketManager {
         this.onErrorHandler = (eventPhase: number) => { };
     }
 
-    connect(ip: string | null = this.url) {
-        if (ip) this.url = ip;
-
+    connect(ip: string = "localhost") {
         return new Promise((resolve, reject) => {
-            console.info(this.url);
-
-            this.socket = new WebSocket(`ws://${this.url}:${this.port}`);
+            this.socket = new WebSocket(`ws://${ip}:${this.port}`);
             this.socket.onopen = () => {
+                this.url = ip;
                 console.info(`[WebSocket] Connected to the server`);
                 resolve(true);
                 this.onConnectHandler();
