@@ -108,13 +108,16 @@
                 on:click={() => {
                   if (
                     ip &&
-                    !ip.match(/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}|localhost$/)
+                    !ip.match(
+                      /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}|localhost$/,
+                    )
                   )
                     return toastsStore.error("Invalid IP address");
                   connecting = true;
                   websocket.connect(ip).then(() => {
                     if (!$ip_addresses.includes(ip))
-                      $ip_addresses = [...$ip_addresses, ip];
+                      $ip_addresses = [ip, ...$ip_addresses];
+                    if ($ip_addresses.length >= 10) $ip_addresses.pop();
                   });
                 }}
                 disabled={connecting}
