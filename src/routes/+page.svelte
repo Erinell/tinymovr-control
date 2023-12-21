@@ -78,7 +78,7 @@
 
     websocket.onErrorHandler = () => {
       if (connecting) {
-        toastsStore.error($_("connection-unable") + ` ${websocket.url}:${websocket.port}`, 5000);
+        toastsStore.error($_("connection-unable") + ` ${websocket.url}:${websocket.port}`, 2000);
       }
       connecting = false;
     };
