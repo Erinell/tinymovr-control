@@ -15,7 +15,7 @@
     RotateCcw,
     FileTerminal,
   } from "lucide-svelte";
-  import { Menubar } from "$lib";
+  import { Label, Menubar } from "$lib";
   import { addMessages, init, _ } from "svelte-i18n";
   import { langs } from "$lib/lang";
   import {
@@ -35,6 +35,7 @@
   import TrajectoryPlanner from "$lib/Components/Dialogs/TrajectoryPlanner/TrajectoryPlanner.svelte";
   import { toastsStore } from "$lib/Components/ui/toast";
   import AddSection from "$lib/Components/Dialogs/AddSection.svelte";
+  import { isConfig } from "$lib/utils";
 
   langs.forEach((lang) => {
     addMessages(lang.id, lang.translation);
@@ -62,42 +63,39 @@
     return sortedObject;
   }
 
-  function exportJSON() {
-    if (!$device)
-      return toastsStore.error(
-        $_("error-connected-data")
-      );
+  function exportJSON(type: string) {
+    if (!["data", "config"].includes(type))
+      return toastsStore.error(`Unable to export JSON from ${type}`);
+    if (!$device && type === "data")
+      return toastsStore.error($_("error-connected-data"));
     var a = document.createElement("a");
     document.body.append(a);
-    a.download = "data";
+    a.download = type;
     a.href = URL.createObjectURL(
-      new Blob([JSON.stringify(sortJSON($device.data), null, 2)], {
-        type: "application/json",
-      }),
+      new Blob(
+        [
+          JSON.stringify(
+            type === "data" && $device ? sortJSON($device.data) : $config,
+            null,
+            2,
+          ),
+        ],
+        {
+          type: "application/json",
+        },
+      ),
     );
     a.click();
     a.remove();
   }
 
-  let inputFile: any;
-  let handles = [];
-  let files = [];
-
-  // TODO: only working on Edge :/
+  let files: any;
+  $: if (files) importConfig();
   async function importConfig() {
-    // const [fileHandle] = await window.showOpenFilePicker();
-    const file = inputFile.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-      reader.addEventListener("load", function () {
-        // image.setAttribute("src", reader.result);
-        console.log(reader);
-      });
-      reader.readAsDataURL(file);
-
-      return;
-    }
+    const importedConfig = JSON.parse(await files[0].text());
+    if (!isConfig(importedConfig))
+      return toastsStore.error($_("not-valid-config"));
+    $config = importedConfig;
   }
 
   let add_chart = false;
@@ -141,15 +139,28 @@
       ><File class="w-4 h-4 mr-1 m-0" />{$_("file")}</Menubar.Trigger
     >
     <Menubar.Content>
-      <Menubar.Item on:click={exportJSON}
+      <Menubar.Item on:click={() => exportJSON("data")}
         ><FileJson2 class="w-5 mr-2" />{$_("export-json-data")}</Menubar.Item
       >
-      <!-- <Input type="file" class="file_button"/>
-      <Menubar.Item on:click={importConfig}>
-        <Upload class="w-5 mr-2" />
-        <Input type="file" class="file_button" />
-        {$_("import-config")}
-      </Menubar.Item> -->
+      <Menubar.Item on:click={() => exportJSON("config")}
+        ><FileJson2 class="w-5 mr-2" />{$_("export-json-config")}</Menubar.Item
+      >
+      <input
+        type="file"
+        name="file"
+        id="file"
+        class="hidden-file-button"
+        bind:files
+        accept="application/JSON"
+      />
+      <div
+        class="select-none cursor-pointer rounded-sm px-2 py-1 hover:bg-accent"
+      >
+        <Label for="file" class="font-normal cursor-pointer">
+          <Upload class="w-5 mr-1 inline" />
+          {$_("import-config")}
+        </Label>
+      </div>
       <Menubar.Separator />
       <Menubar.Sub>
         <Menubar.SubTrigger>{$_("share")}</Menubar.SubTrigger>
