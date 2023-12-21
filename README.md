@@ -102,8 +102,6 @@ npm run package:<win|linux>
 Feel free to contribute or report issues to make this project better!
 
 ## TODO
-- Add the possibility to remove a toast by clicking on it
-- Fix an issue with the IP address input
 - Ensure support for multiple boards
 - Add controls in Current mode
 - Add controls for homing
