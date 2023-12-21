@@ -96,7 +96,7 @@ npm run package:<win|linux>
 1. Plug the Tinymovr board CAN Bus to a computer
 2. Run the server `python main.py`
 3. Run the client
-4. Click on Connect !
+4. Write the server IP and click on "Connect" !
 
 ## Contributing
 Feel free to contribute or report issues to make this project better!
