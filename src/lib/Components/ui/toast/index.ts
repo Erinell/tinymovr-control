@@ -19,6 +19,11 @@ function create_toast_store(default_timeout = 3000) {
 		})
 	};
 
+	const remove = (id: string) => {
+		_toasts.update(state => {
+			return state.filter(e => e.id !== id);
+		})
+	}
 	let timers = [];
 
 	const toasts = derived(_toasts, ($_toasts: Array<IToast>, set) => {
@@ -41,6 +46,7 @@ function create_toast_store(default_timeout = 3000) {
 	return {
 		subscribe,
 		send,
+		remove,
 		info: (msg: string, timeout: number = default_timeout) => send(msg, Type.INFO, timeout),
 		success: (msg: string, timeout: number = default_timeout) => send(msg, Type.SUCCESS, timeout),
 		danger: (msg: string, timeout: number = default_timeout) => send(msg, Type.DANGER, timeout),

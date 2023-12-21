@@ -31,14 +31,13 @@ export class WebSocketManager {
         this.onErrorHandler = (eventPhase: number) => { };
     }
 
-    connect(ip: string | null = this.url) {
-        if (ip) this.url = ip;
+    connect(ip: string) {
+        this.url = ip;
 
         return new Promise((resolve, reject) => {
-            console.info(this.url);
-
             this.socket = new WebSocket(`ws://${this.url}:${this.port}`);
             this.socket.onopen = () => {
+                this.url = ip;
                 console.info(`[WebSocket] Connected to the server`);
                 resolve(true);
                 this.onConnectHandler();
@@ -56,7 +55,7 @@ export class WebSocketManager {
                 } else if (this.autoconnect) {
                     console.error(`[WebSocket] Connection lost. Reconnecting...`);
                     setTimeout(() => {
-                        this.connect();
+                        this.connect(this.url);
                     }, 1000);
                 }
 

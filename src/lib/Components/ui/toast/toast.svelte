@@ -32,8 +32,8 @@
 
 <div class="toasts">
     {#each toasts as toast}
-        <div transition:fly={{ y: -15 }}>
-            <Card.Root class={`z-50 border-2 ${color[toast.type]}`}>
+        <div transition:fly={{ y: -15 }} on:click={()=>toastsStore.remove(toast.id)}>
+            <Card.Root class={`z-50 border-2 ${color[toast.type]}`} >
                 <Card.Header>
                     <Card.Title class="flex items-center gap-3">
                         <Info />{titles[toast.type]}
@@ -56,11 +56,10 @@
         height: 4rem;
         right: 0.75rem;
         top: 4rem;
-        z-index: 9999;
+        z-index: 10;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         gap: 0.5em;
-        pointer-events: none;
     }
 </style>
