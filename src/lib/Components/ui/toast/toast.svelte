@@ -30,7 +30,7 @@
     ];
 </script>
 
-<div class="toasts">
+<div class={`toasts ${toasts.length === 0 ? "pointer-events-none" : ""}`}>
     {#each toasts as toast}
         <div transition:fly={{ y: -15 }} on:click={()=>toastsStore.remove(toast.id)}>
             <Card.Root class={`z-50 border-2 ${color[toast.type]}`} >
@@ -56,7 +56,7 @@
         height: 4rem;
         right: 0.75rem;
         top: 4rem;
-        z-index: 10;
+        z-index: 99;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
