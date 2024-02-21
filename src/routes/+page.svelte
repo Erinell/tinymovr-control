@@ -130,7 +130,7 @@
 <Header {close} bind:connecting bind:connected />
 
 <div class="content">
-  <div class="sidebar w-24">
+  <div class="relative sidebar w-24">
     <Card.Root class="h-full pt-2 overflow-hidden rounded-none border-none">
       {#if $device && $devices_store.length > 0}
         <Tabs.Root value={$devices_store[0].id} class="w-full px-2">
@@ -147,6 +147,9 @@
           </Tabs.List>
         </Tabs.Root>
       {/if}
+      <div class="font-medium text-sm text-foreground left-1/2 -translate-x-1/2 bottom-2 absolute">
+        1.2.5
+      </div>
     </Card.Root>
   </div>
 
