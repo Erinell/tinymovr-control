@@ -115,7 +115,7 @@
                     return toastsStore.error("Invalid IP address");
                   connecting = true;
                   websocket.connect(!ip || ip.length == 0 ? "localhost" : ip).then(() => {
-                    if (!$ip_addresses.includes(ip))
+                    if (!$ip_addresses.includes(ip) && ip.trim() !== "")
                       $ip_addresses = [ip, ...$ip_addresses];
                     if ($ip_addresses.length >= 10) $ip_addresses.pop();
                   });
