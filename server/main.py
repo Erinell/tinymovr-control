@@ -5,7 +5,7 @@ from sys import exit
 from threading import Thread
 
 from tinymovr.channel import ResponseError
-from devices import process_api, api, user_ns
+from devices import process_spec, spec, user_ns
 
 import websockets
 import logging
@@ -41,13 +41,13 @@ class BaseService:
             return await self.outgoing.put(format(message["id"], "Pong !"))
 
         if message["key"] == "definitions":
-            return await self.outgoing.put(format(message["id"], dumps(api)))
+            return await self.outgoing.put(format(message["id"], dumps(spec)))
         
         if message["key"] == "devices":
             return await self.outgoing.put(format(message["id"], dumps(list(user_ns))))
 
         try:
-            value, info = process_api(message["key"], message["value"])
+            value, info = process_spec(message["key"], message["value"])
             if value != None:
                 return await self.outgoing.put(format(message["id"], value))
 
