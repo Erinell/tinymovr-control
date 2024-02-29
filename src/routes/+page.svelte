@@ -159,7 +159,7 @@
         </Tabs.Root>
       {/if}
       <div class="font-medium text-sm w-full text-center bottom-2 absolute">
-        1.2.5
+        1.3.0
       </div>
     </Card.Root>
   </div>
