@@ -32,6 +32,12 @@ export const defaultConfig = readable<Config>({
   traj_planner: []
 });
 
+function loadLang() {
+  if (!browser) return;
+  const lang = localStorage.getItem("lang");
+  return lang ? lang : null;
+}
+
 function loadConfig() {
   if (!browser) return;
   const config = localStorage.getItem("config");
@@ -384,3 +390,5 @@ export const editable_sections = writable<boolean>(false);
 export const remove_sections = writable<boolean>(false);
 
 export const ip_addresses = writable<String[]>(loadIP() ?? []);
+
+export const current_lang = writable<string>(loadLang() ?? "en");

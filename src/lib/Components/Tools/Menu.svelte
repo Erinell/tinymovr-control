@@ -24,6 +24,7 @@
     editable_sections,
     remove_sections,
     defaultConfig,
+    current_lang,
   } from "$lib/store";
   import AddChart from "$lib/Components/Dialogs/AddChart.svelte";
   import EditCharts from "$lib/Components/Dialogs/EditCharts.svelte";
@@ -41,11 +42,8 @@
     addMessages(lang.id, lang.translation);
   });
 
-  // TODO: store lang in config
-  let lang = "en";
-
-  updateLang();
-  function updateLang() {
+  updateLang($current_lang);
+  function updateLang(lang: string | undefined) {
     init({
       initialLocale: lang,
       fallbackLocale: "",
@@ -270,7 +268,7 @@
       <Menubar.Sub>
         <Menubar.SubTrigger>{$_("language")}</Menubar.SubTrigger>
         <Menubar.SubContent>
-          <Menubar.RadioGroup bind:value={lang} onValueChange={updateLang}>
+          <Menubar.RadioGroup bind:value={$current_lang} onValueChange={(value)=> updateLang(value)}>
             {#each langs as lang}
               <Menubar.RadioItem value={lang.id}>{lang.label}</Menubar.RadioItem
               >

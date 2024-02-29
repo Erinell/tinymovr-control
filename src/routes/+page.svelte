@@ -11,6 +11,7 @@
     macros,
     loop,
     ip_addresses,
+    current_lang,
   } from "$lib/store";
   import Header, { websocket } from "./Header.svelte";
   import { _ } from "svelte-i18n";
@@ -49,6 +50,11 @@
   ip_addresses.subscribe((ip) => {
     if (!browser) return;
     localStorage.setItem("ip", JSON.stringify(ip));
+  });
+
+  current_lang.subscribe((lang) => {
+    if(!browser) return;
+    localStorage.setItem("lang", lang);
   })
 
   onMount(() => {
@@ -78,7 +84,10 @@
 
     websocket.onErrorHandler = () => {
       if (connecting) {
-        toastsStore.error($_("connection-unable") + ` ${websocket.url}:${websocket.port}`, 2000);
+        toastsStore.error(
+          $_("connection-unable") + ` ${websocket.url}:${websocket.port}`,
+          2000,
+        );
       }
       connecting = false;
     };
@@ -141,13 +150,15 @@
                 class="w-full"
                 on:click={(e) => {
                   selectDevice(e.detail.currentTarget.textContent);
-                }}>{device.id}</Tabs.Trigger
+                }}
               >
+                {device.id}
+              </Tabs.Trigger>
             {/each}
           </Tabs.List>
         </Tabs.Root>
       {/if}
-      <div class="font-medium text-sm text-foreground left-1/2 -translate-x-1/2 bottom-2 absolute">
+      <div class="font-medium text-sm w-full text-center bottom-2 absolute">
         1.2.5
       </div>
     </Card.Root>
