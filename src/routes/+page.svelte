@@ -11,6 +11,7 @@
     macros,
     loop,
     ip_addresses,
+    current_lang,
   } from "$lib/store";
   import Header, { websocket } from "./Header.svelte";
   import { _ } from "svelte-i18n";
@@ -49,6 +50,11 @@
   ip_addresses.subscribe((ip) => {
     if (!browser) return;
     localStorage.setItem("ip", JSON.stringify(ip));
+  });
+
+  current_lang.subscribe((lang) => {
+    if(!browser) return;
+    localStorage.setItem("lang", lang);
   })
 
   onMount(() => {
@@ -78,7 +84,10 @@
 
     websocket.onErrorHandler = () => {
       if (connecting) {
-        toastsStore.error($_("connection-unable") + ` ${websocket.url}:${websocket.port}`, 2000);
+        toastsStore.error(
+          $_("connection-unable") + ` ${websocket.url}:${websocket.port}`,
+          2000,
+        );
       }
       connecting = false;
     };
@@ -130,7 +139,7 @@
 <Header {close} bind:connecting bind:connected />
 
 <div class="content">
-  <div class="sidebar w-24">
+  <div class="relative sidebar w-24">
     <Card.Root class="h-full pt-2 overflow-hidden rounded-none border-none">
       {#if $device && $devices_store.length > 0}
         <Tabs.Root value={$devices_store[0].id} class="w-full px-2">
@@ -141,12 +150,17 @@
                 class="w-full"
                 on:click={(e) => {
                   selectDevice(e.detail.currentTarget.textContent);
-                }}>{device.id}</Tabs.Trigger
+                }}
               >
+                {device.id}
+              </Tabs.Trigger>
             {/each}
           </Tabs.List>
         </Tabs.Root>
       {/if}
+      <div class="font-medium text-sm w-full text-center bottom-2 absolute">
+        1.3.0
+      </div>
     </Card.Root>
   </div>
 

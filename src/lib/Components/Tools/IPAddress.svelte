@@ -1,7 +1,9 @@
 <script lang="ts">
   import { Select } from "$lib";
-    import { ip_addresses } from "$lib/store";
+  import { ip_addresses } from "$lib/store";
   import Input from "../ui/input/input.svelte";
+  import { _ } from "svelte-i18n";
+
   export let value = "";
 
   $: filteredIP = $ip_addresses.filter((r) => r.includes(value));
@@ -14,7 +16,7 @@
 >
   <Select.Trigger class="w-[180px]" asChild let:builder cursor={false}>
     <div use:builder.action {...builder}>
-      <Input class="w-36" bind:value placeholder="IP address"></Input>
+      <Input class="w-36" bind:value placeholder={$_("ip-address")}></Input>
     </div>
   </Select.Trigger>
   {#if filteredIP.length > 0}

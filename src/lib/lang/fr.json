@@ -24,6 +24,7 @@
   "homing": "Homing",
   "idle": "Repos",
   "import-config": "Importer une config",
+  "ip-address": "Adresse IP",
   "language": "Langage",
   "macro-already-exist": "La macro existe déjà avec ce nom !",
   "macro-name-required": "Le nom est requis !",

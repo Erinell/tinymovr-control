@@ -7,6 +7,7 @@ try { require("electron-reloader")(module); } catch { }
 const loadURL = serve({ directory: "." });
 const port = process.env.PORT || 5173;
 const isdev = !app.isPackaged || (process.env.NODE_ENV == "development");
+const lock = app.requestSingleInstanceLock();
 let mainwindow;
 
 function loadVite(port) {
@@ -59,6 +60,18 @@ function createMainWindow() {
     else loadURL(mainwindow);
 }
 
-app.once("ready", createMainWindow);
-app.on("activate", () => { if (!mainwindow) createMainWindow(); });
-app.on("window-all-closed", () => { if (process.platform !== "darwin") app.quit(); });
+if (!lock) {
+    app.quit();
+} else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        if (mainwindow) {
+            if (mainwindow.isMinimized()) mainwindow.restore();
+            mainwindow.show();
+            mainwindow.focus();
+        }
+    })
+
+    app.once("ready", createMainWindow);
+    app.on("activate", () => { if (!mainwindow) createMainWindow(); });
+    app.on("window-all-closed", () => { if (process.platform !== "darwin") app.quit(); });
+}
